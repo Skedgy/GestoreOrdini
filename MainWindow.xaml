@@ -1,0 +1,241 @@
+﻿<Window x:Class="GestoreOrdini.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GestoreOrdini"
+        xmlns:svg="http://sharpvectors.codeplex.com/svgc/"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Loaded="MainWindow_Loaded"
+        WindowState="Maximized"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
+        WindowStartupLocation="CenterScreen" Height="600" Width="1000">
+    <Grid Background="#FFEDE7EA">
+        <Grid.Resources>
+            <Style x:Key="DownloadButtonStyle" TargetType="Button">
+                <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                                 To="1.06"
+                                                 Duration="0:0:0.15"/>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                                 To="1.06"
+                                                 Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX"
+                                                 To="1"
+                                                 Duration="0:0:0.15"/>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY"
+                                                 To="1"
+                                                 Duration="0:0:0.15"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="15,10,0,0">
+            <Label x:Name="Titolo_AS"
+                   Content="MyMcDonald's"
+                   FontFamily="Speedee"
+                   FontSize="48"
+                   FontWeight="Bold"
+                   Padding="0"
+                   VerticalContentAlignment="Center"/>
+            <svg:SvgViewbox Source="/Images/McDonald's_Golden_Arches.svg"
+                                Width="67"
+                                Height="59"
+                                Margin="12,0,0,0"
+                                VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Margin="15,0,0,20">
+            <TextBlock
+                HorizontalAlignment="Left"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top"
+                FontFamily="Speedee"
+                FontSize="24"
+                Width="340"
+                Margin="0,0,0,12">
+                <Run Language="it-it"
+                     Text="Oppure entra in un mondo di gusto con la nostra App McDonald's!"/>
+                <TextBlock.Foreground>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#E4002B" Offset="0.0"/>
+                        <GradientStop Color="#FF7A00" Offset="0.5"/>
+                        <GradientStop Color="#8E0038" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </TextBlock.Foreground>
+            </TextBlock>
+
+            <StackPanel Orientation="Horizontal">
+                <Button Width="180"
+                        Height="54"
+                        Padding="0"
+                        Margin="0,0,10,0"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Cursor="Hand"
+                        Style="{StaticResource DownloadButtonStyle}"
+                        Click="AppStoreButton_Click">
+                    <svg:SvgViewbox Source="/Images/Appstore.svg"/>
+                </Button>
+
+                <Button Width="180"
+                        Height="54"
+                        Padding="0"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Cursor="Hand"
+                        Style="{StaticResource DownloadButtonStyle}"
+                        Click="GooglePlayButton_Click">
+                    <svg:SvgViewbox Source="/Images/GooglePlay.svg"/>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="15,20,0,0">
+            <StackPanel.Resources>
+                <SolidColorBrush x:Key="TermsLinkBrush" Color="#1E90FF"/>
+
+                <Style TargetType="TextBox">
+                    <Setter Property="Width" Value="360"/>
+                    <Setter Property="Height" Value="40"/>
+                    <Setter Property="Margin" Value="0,0,0,16"/>
+                    <Setter Property="Padding" Value="10,6"/>
+                    <Setter Property="Background" Value="#FFF5F5F5"/>
+                    <Setter Property="BorderBrush" Value="#000000"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="FontFamily" Value="Speedee"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="BorderBrush" Value="#000000"/>
+                            <Setter Property="BorderThickness" Value="2"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+
+                <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
+                    <Setter Property="FontFamily" Value="Speedee"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Margin" Value="0,0,0,6"/>
+                </Style>
+
+                <Style x:Key="TermsLinkStyle" TargetType="Hyperlink">
+                    <Setter Property="Foreground" Value="{StaticResource TermsLinkBrush}"/>
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
+                                                    To="#B8860B"
+                                                    Duration="0:0:0.18"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
+                                                    To="#1E90FF"
+                                                    Duration="0:0:0.18"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
+
+            <TextBlock Text="Registrazione"
+                       FontFamily="Speedee"
+                       FontSize="42"
+                       FontWeight="Bold"
+                       Margin="0,0,0,14"/>
+
+            <TextBlock Text="Compila i campi per accedere all'applicazione."
+                       FontFamily="Speedee"
+                       FontSize="18"
+                       TextWrapping="Wrap"
+                       Width="360"
+                       Margin="0,0,0,22"/>
+
+            <TextBlock Text="* Campi obbligatori"
+                       FontWeight="Bold"
+                       FontFamily="Speedee"
+                       FontSize="16"
+                       Margin="0,0,0,8"/>
+
+            <TextBlock Text="* Nome" Style="{StaticResource FieldLabelStyle}"/>
+            <TextBox x:Name="NomeTextBox"/>
+
+            <TextBlock Text="* Cognome" Style="{StaticResource FieldLabelStyle}"/>
+            <TextBox x:Name="CognomeTextBox"/>
+
+            <TextBlock Text="* Data di Nascita" Style="{StaticResource FieldLabelStyle}"/>
+            <TextBox x:Name="DataNascitaTextBox"/>
+
+            <TextBlock Text="Posizione attuale (da IP)"
+                       FontFamily="Speedee"
+                       FontSize="24"
+                       Margin="0,8,0,4"/>
+            <TextBlock x:Name="PosizioneTextBlock"
+                       Text="Rilevamento posizione..."
+                       FontFamily="Speedee"
+                       FontSize="22"
+                       TextWrapping="Wrap"
+                       Width="360"/>
+
+            <TextBlock FontFamily="Speedee"
+                       FontSize="14"
+                       TextWrapping="Wrap"
+                       Width="360"
+                       Margin="0,12,0,0">
+                <Run Text="*Cliccando &quot;Registrati&quot;, accetti i "/>
+                <Hyperlink NavigateUri="https://www.mcdonalds.it/termini-e-condizioni"
+                           RequestNavigate="TermsLink_RequestNavigate"
+                           Style="{StaticResource TermsLinkStyle}">
+                    <Run Text="Termini e Condizioni di McDonald's"/>
+                </Hyperlink>
+                <Run Text=". Puoi disiscriverti in qualunque momento. Prendi nota che quando ti disiscrivi potrebbero volerci 10 giorni lavorativi affinché la tua richiesta abbia effetto."/>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>
