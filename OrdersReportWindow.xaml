@@ -1,0 +1,56 @@
+<Window x:Class="GestoreOrdini.OrdersReportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Resoconto Ordini"
+        Width="1280"
+        Height="680"
+        MinWidth="1100"
+        MinHeight="560"
+        Background="#FFEDE7EA">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Resoconto Ordini"
+                   FontFamily="Speedee"
+                   FontSize="42"
+                   FontWeight="Bold"
+                   Margin="0,0,0,12"/>
+
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding Orders}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  HeadersVisibility="Column"
+                  RowHeight="40">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="N°" Binding="{Binding OrderNumber}" Width="140"/>
+                <DataGridTextColumn Header="Ordine" Binding="{Binding OrderId}" Width="170"/>
+                <DataGridTextColumn Header="Data" Binding="{Binding CreatedAt, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="170"/>
+                <DataGridTextColumn Header="Cliente" Binding="{Binding CustomerFullName}" Width="220"/>
+                <DataGridTextColumn Header="Nascita" Binding="{Binding CustomerBirthDate, StringFormat={}{0:dd/MM/yyyy}}" Width="130"/>
+                <DataGridTextColumn Header="Posizione" Binding="{Binding Location}" Width="220"/>
+                <DataGridTextColumn Header="Pagamento" Binding="{Binding PaymentSummary}" Width="280"/>
+                <DataGridTextColumn Header="Totale" Binding="{Binding TotalAmount, StringFormat={}{0:C}}" Width="130"/>
+                <DataGridTextColumn Header="Dettagli" Binding="{Binding ItemsSummary}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="2"
+                Content="Chiudi"
+                Width="130"
+                Height="42"
+                HorizontalAlignment="Right"
+                Margin="0,12,0,0"
+                FontFamily="Speedee"
+                FontSize="20"
+                Click="CloseButton_Click"/>
+    </Grid>
+</Window>

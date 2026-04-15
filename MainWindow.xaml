@@ -11,7 +11,11 @@
         WindowState="Maximized"
         UseLayoutRounding="True"
         SnapsToDevicePixels="True"
-        WindowStartupLocation="CenterScreen" Height="600" Width="1000">
+        WindowStartupLocation="CenterScreen"
+        Height="600"
+        Width="1000"
+        MinHeight="600"
+        MinWidth="1000">
     <Grid Background="#FFEDE7EA">
         <Grid.Resources>
             <Style x:Key="DownloadButtonStyle" TargetType="Button">
@@ -48,194 +52,517 @@
                     </EventTrigger>
                 </Style.Triggers>
             </Style>
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="15,10,0,0">
-            <Label x:Name="Titolo_AS"
-                   Content="MyMcDonald's"
-                   FontFamily="Speedee"
-                   FontSize="48"
-                   FontWeight="Bold"
-                   Padding="0"
-                   VerticalContentAlignment="Center"/>
-            <svg:SvgViewbox Source="/Images/McDonald's_Golden_Arches.svg"
+            <Style x:Key="RegisterButtonStyle" TargetType="Button">
+                <Setter Property="Width" Value="180"/>
+                <Setter Property="Height" Value="56"/>
+                <Setter Property="FontFamily" Value="Speedee"/>
+                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="#1F1F1F"/>
+                <Setter Property="Background" Value="#FFBC0D"/>
+                <Setter Property="BorderBrush" Value="#FFBC0D"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="8">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#E6A90B"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#CC960A"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Background" Value="#FFE4C976"/>
+                        <Setter Property="Foreground" Value="#AA1F1F1F"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="DatePicker">
+                <Setter Property="Width" Value="360"/>
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Margin" Value="0,0,0,16"/>
+                <Setter Property="FontFamily" Value="Speedee"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Background" Value="#FFF5F5F5"/>
+                <Setter Property="BorderBrush" Value="#000000"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="SelectedDateFormat" Value="Short"/>
+            </Style>
+
+            <Style TargetType="DatePickerTextBox">
+                <Setter Property="Background" Value="#FFF5F5F5"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="10,4"/>
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="Foreground" Value="#FF000000"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="IsReadOnly" Value="True"/>
+            </Style>
+
+            <Style x:Key="AdCardBorderStyle" TargetType="Border">
+                <Setter Property="Background" Value="#FFF3F3F3"/>
+                <Setter Property="CornerRadius" Value="14"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0,0,0,14"/>
+                <Setter Property="BorderBrush" Value="#11000000"/>
+                <Setter Property="BorderThickness" Value="1"/>
+            </Style>
+
+            <Style x:Key="ElegantScrollBarStyle" TargetType="{x:Type ScrollBar}">
+                <Setter Property="Width" Value="10"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Margin" Value="0,4,4,4"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollBar}">
+                            <Grid Background="Transparent">
+                                <Track x:Name="PART_Track"
+                                       IsDirectionReversed="True"
+                                       Focusable="False">
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton Command="ScrollBar.PageUpCommand"
+                                                      Opacity="0"
+                                                      IsTabStop="False"/>
+                                    </Track.DecreaseRepeatButton>
+                                    <Track.Thumb>
+                                        <Thumb>
+                                            <Thumb.Template>
+                                                <ControlTemplate TargetType="{x:Type Thumb}">
+                                                    <Border Background="#99A6A1A4"
+                                                            CornerRadius="8"/>
+                                                </ControlTemplate>
+                                            </Thumb.Template>
+                                        </Thumb>
+                                    </Track.Thumb>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton Command="ScrollBar.PageDownCommand"
+                                                      Opacity="0"
+                                                      IsTabStop="False"/>
+                                    </Track.IncreaseRepeatButton>
+                                </Track>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Orientation" Value="Horizontal">
+                                    <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                        <Setter.Value>
+                                            <RotateTransform Angle="90"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+
+        <Grid x:Name="RegistrationPage">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="15,10,0,0">
+                <Label x:Name="Titolo_AS"
+                       Content="MyMcDonald's"
+                       FontFamily="Speedee"
+                       FontSize="48"
+                       FontWeight="Bold"
+                       Padding="0"
+                       VerticalContentAlignment="Center"/>
+                <svg:SvgViewbox Source="/Images/McDonald's_Golden_Arches.svg"
                                 Width="67"
                                 Height="59"
                                 Margin="12,0,0,0"
                                 VerticalAlignment="Center"/>
-        </StackPanel>
-
-        <StackPanel Grid.Row="1"
-                    Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Margin="15,0,0,20">
-            <TextBlock
-                HorizontalAlignment="Left"
-                TextWrapping="Wrap"
-                VerticalAlignment="Top"
-                FontFamily="Speedee"
-                FontSize="24"
-                Width="340"
-                Margin="0,0,0,12">
-                <Run Language="it-it"
-                     Text="Oppure entra in un mondo di gusto con la nostra App McDonald's!"/>
-                <TextBlock.Foreground>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <GradientStop Color="#E4002B" Offset="0.0"/>
-                        <GradientStop Color="#FF7A00" Offset="0.5"/>
-                        <GradientStop Color="#8E0038" Offset="1.0"/>
-                    </LinearGradientBrush>
-                </TextBlock.Foreground>
-            </TextBlock>
-
-            <StackPanel Orientation="Horizontal">
-                <Button Width="180"
-                        Height="54"
-                        Padding="0"
-                        Margin="0,0,10,0"
-                        BorderThickness="0"
-                        Background="Transparent"
-                        Cursor="Hand"
-                        Style="{StaticResource DownloadButtonStyle}"
-                        Click="AppStoreButton_Click">
-                    <svg:SvgViewbox Source="/Images/Appstore.svg"/>
-                </Button>
-
-                <Button Width="180"
-                        Height="54"
-                        Padding="0"
-                        BorderThickness="0"
-                        Background="Transparent"
-                        Cursor="Hand"
-                        Style="{StaticResource DownloadButtonStyle}"
-                        Click="GooglePlayButton_Click">
-                    <svg:SvgViewbox Source="/Images/GooglePlay.svg"/>
-                </Button>
             </StackPanel>
-        </StackPanel>
 
-        <StackPanel Grid.Row="1"
+            <Grid Grid.Row="1"
+                  Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ScrollViewer Grid.Row="0"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Margin="15,20,24,10">
+                    <ScrollViewer.Resources>
+                        <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ElegantScrollBarStyle}"/>
+                    </ScrollViewer.Resources>
+                    <StackPanel HorizontalAlignment="Left"
+                                VerticalAlignment="Top">
+                        <StackPanel.Resources>
+                            <SolidColorBrush x:Key="TermsLinkBrush" Color="#1E90FF"/>
+
+                            <Style TargetType="TextBox">
+                                <Setter Property="Width" Value="360"/>
+                                <Setter Property="Height" Value="40"/>
+                                <Setter Property="Margin" Value="0,0,0,16"/>
+                                <Setter Property="Padding" Value="10,6"/>
+                                <Setter Property="Background" Value="#FFF5F5F5"/>
+                                <Setter Property="BorderBrush" Value="#000000"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="FontFamily" Value="Speedee"/>
+                                <Setter Property="FontSize" Value="16"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsKeyboardFocused" Value="True">
+                                        <Setter Property="BorderBrush" Value="#000000"/>
+                                        <Setter Property="BorderThickness" Value="2"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+
+                            <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
+                                <Setter Property="FontFamily" Value="Speedee"/>
+                                <Setter Property="FontSize" Value="20"/>
+                                <Setter Property="Margin" Value="0,0,0,6"/>
+                            </Style>
+
+                            <Style x:Key="TermsLinkStyle" TargetType="Hyperlink">
+                                <Setter Property="Foreground" Value="{StaticResource TermsLinkBrush}"/>
+                                <Style.Triggers>
+                                    <EventTrigger RoutedEvent="MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
+                                                                To="#B8860B"
+                                                                Duration="0:0:0.18"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="MouseLeave">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
+                                                                To="#1E90FF"
+                                                                Duration="0:0:0.18"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <TextBlock Text="Registrazione"
+                                   FontFamily="Speedee"
+                                   FontSize="42"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,14"/>
+
+                        <TextBlock Text="Compila i campi per accedere all'applicazione."
+                                   FontFamily="Speedee"
+                                   FontSize="18"
+                                   TextWrapping="Wrap"
+                                   Width="360"
+                                   Margin="0,0,0,22"/>
+
+                        <TextBlock Text="* Campi obbligatori"
+                                   FontWeight="Bold"
+                                   FontFamily="Speedee"
+                                   FontSize="16"
+                                   Margin="0,0,0,8"/>
+
+                        <TextBlock Text="* Nome" Style="{StaticResource FieldLabelStyle}"/>
+                        <TextBox x:Name="NomeTextBox"
+                                 TextChanged="InputField_TextChanged"
+                                 PreviewTextInput="OnlyLettersTextBox_PreviewTextInput"
+                                 DataObject.Pasting="OnlyLettersTextBox_Pasting"/>
+
+                        <TextBlock Text="* Cognome" Style="{StaticResource FieldLabelStyle}"/>
+                        <TextBox x:Name="CognomeTextBox"
+                                 TextChanged="InputField_TextChanged"
+                                 PreviewTextInput="OnlyLettersTextBox_PreviewTextInput"
+                                 DataObject.Pasting="OnlyLettersTextBox_Pasting"/>
+
+                        <TextBlock Text="* Data di Nascita" Style="{StaticResource FieldLabelStyle}"/>
+                        <DatePicker x:Name="DataNascitaDatePicker"
+                                    SelectedDateChanged="DataNascitaDatePicker_SelectedDateChanged"/>
+
+                        <TextBlock Text="Posizione attuale (da IP)"
+                                   FontFamily="Speedee"
+                                   FontSize="24"
+                                   Margin="0,8,0,4"/>
+                        <TextBlock x:Name="PosizioneTextBlock"
+                                   Text="Rilevamento posizione..."
+                                   FontFamily="Speedee"
+                                   FontSize="22"
+                                   TextWrapping="Wrap"
+                                   Width="360"/>
+
+                        <TextBlock FontFamily="Speedee"
+                                   FontSize="14"
+                                   TextWrapping="Wrap"
+                                   Width="360"
+                                   Margin="0,12,0,0">
+                            <Run Text="*Cliccando &quot;Registrati&quot;, accetti i "/>
+                            <Hyperlink NavigateUri="https://www.mcdonalds.it/termini-e-condizioni"
+                                       RequestNavigate="TermsLink_RequestNavigate"
+                                       Style="{StaticResource TermsLinkStyle}">
+                                <Run Text="Termini e Condizioni di McDonald's"/>
+                            </Hyperlink>
+                            <Run Text=". Puoi disiscriverti in qualunque momento. Prendi nota che quando ti disiscrivi potrebbero volerci 10 giorni lavorativi affinché la tua richiesta abbia effetto."/>
+                        </TextBlock>
+
+                        <Button x:Name="RegisterButton"
+                                Content="Registrati"
+                                Style="{StaticResource RegisterButtonStyle}"
+                                Margin="0,18,0,10"
+                                IsEnabled="False"
+                                Click="RegisterButton_Click"/>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <StackPanel Grid.Row="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Margin="15,0,0,20">
+                    <TextBlock HorizontalAlignment="Left"
+                               TextWrapping="Wrap"
+                               VerticalAlignment="Top"
+                               FontFamily="Speedee"
+                               FontSize="24"
+                               Width="340"
+                               Margin="0,0,0,12">
+                        <Run Language="it-it"
+                             Text="Oppure entra in un mondo di gusto con la nostra App McDonald's!"/>
+                        <TextBlock.Foreground>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#E4002B" Offset="0.0"/>
+                                <GradientStop Color="#FF7A00" Offset="0.5"/>
+                                <GradientStop Color="#8E0038" Offset="1.0"/>
+                            </LinearGradientBrush>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Width="180"
+                                Height="54"
+                                Padding="0"
+                                Margin="0,0,10,0"
+                                BorderThickness="0"
+                                Background="Transparent"
+                                Cursor="Hand"
+                                Style="{StaticResource DownloadButtonStyle}"
+                                Click="AppStoreButton_Click">
+                            <svg:SvgViewbox Source="/Images/Appstore.svg"/>
+                        </Button>
+
+                        <Button Width="180"
+                                Height="54"
+                                Padding="0"
+                                BorderThickness="0"
+                                Background="Transparent"
+                                Cursor="Hand"
+                                Style="{StaticResource DownloadButtonStyle}"
+                                Click="GooglePlayButton_Click">
+                            <svg:SvgViewbox Source="/Images/GooglePlay.svg"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <Border Grid.Row="1"
                     Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="15,20,0,0">
-            <StackPanel.Resources>
-                <SolidColorBrush x:Key="TermsLinkBrush" Color="#1E90FF"/>
+                    HorizontalAlignment="Right"
+                    Margin="0,22,8,20"
+                    Width="3"
+                    CornerRadius="2"
+                    Background="#55FFBC0D"/>
 
-                <Style TargetType="TextBox">
-                    <Setter Property="Width" Value="360"/>
-                    <Setter Property="Height" Value="40"/>
-                    <Setter Property="Margin" Value="0,0,0,16"/>
-                    <Setter Property="Padding" Value="10,6"/>
-                    <Setter Property="Background" Value="#FFF5F5F5"/>
-                    <Setter Property="BorderBrush" Value="#000000"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="FontFamily" Value="Speedee"/>
-                    <Setter Property="FontSize" Value="16"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter Property="BorderBrush" Value="#000000"/>
-                            <Setter Property="BorderThickness" Value="2"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
+            <ScrollViewer x:Name="OffersScrollViewer"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          Margin="0,20,15,20"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          MouseEnter="OffersScrollViewer_MouseEnter"
+                          MouseLeave="OffersScrollViewer_MouseLeave">
+                <ScrollViewer.Resources>
+                    <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource ElegantScrollBarStyle}"/>
+                </ScrollViewer.Resources>
+                <StackPanel>
+                    <Border Style="{StaticResource AdCardBorderStyle}">
+                        <Image Source="/Offers/9%20Chicken%20McNuggets.png"
+                               Stretch="Uniform"
+                               SnapsToDevicePixels="True"/>
+                    </Border>
 
-                <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
-                    <Setter Property="FontFamily" Value="Speedee"/>
-                    <Setter Property="FontSize" Value="20"/>
-                    <Setter Property="Margin" Value="0,0,0,6"/>
-                </Style>
+                    <Border Style="{StaticResource AdCardBorderStyle}">
+                        <Image Source="/Offers/Double%20Chicken%20BBQ%20Menu.png"
+                               Stretch="Uniform"
+                               SnapsToDevicePixels="True"/>
+                    </Border>
 
-                <Style x:Key="TermsLinkStyle" TargetType="Hyperlink">
-                    <Setter Property="Foreground" Value="{StaticResource TermsLinkBrush}"/>
-                    <Style.Triggers>
-                        <EventTrigger RoutedEvent="MouseEnter">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
-                                                    To="#B8860B"
-                                                    Duration="0:0:0.18"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="MouseLeave">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
-                                                    To="#1E90FF"
-                                                    Duration="0:0:0.18"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Resources>
+                    <Border Style="{StaticResource AdCardBorderStyle}">
+                        <Image Source="/Offers/McChicken%20Menu%20e%206%20Chicken%20McNuggets.png"
+                               Stretch="Uniform"
+                               SnapsToDevicePixels="True"/>
+                    </Border>
 
-            <TextBlock Text="Registrazione"
+                    <Border Style="{StaticResource AdCardBorderStyle}">
+                        <Image Source="/Offers/McChicken%20Menu%20Large.png"
+                               Stretch="Uniform"
+                               SnapsToDevicePixels="True"/>
+                    </Border>
+
+                    <Border Style="{StaticResource AdCardBorderStyle}" Margin="0,0,0,6">
+                        <Image Source="/Offers/McFlurry.png"
+                               Stretch="Uniform"
+                               SnapsToDevicePixels="True"/>
+                    </Border>
+
+                    <Border Style="{StaticResource AdCardBorderStyle}">
+                        <Image Source="/Offers/9%20Chicken%20McNuggets.png"
+                               Stretch="Uniform"
+                               SnapsToDevicePixels="True"/>
+                    </Border>
+
+                    <Border Style="{StaticResource AdCardBorderStyle}">
+                        <Image Source="/Offers/Double%20Chicken%20BBQ%20Menu.png"
+                               Stretch="Uniform"
+                               SnapsToDevicePixels="True"/>
+                    </Border>
+
+                    <Border Style="{StaticResource AdCardBorderStyle}">
+                        <Image Source="/Offers/McChicken%20Menu%20e%206%20Chicken%20McNuggets.png"
+                               Stretch="Uniform"
+                               SnapsToDevicePixels="True"/>
+                    </Border>
+
+                    <Border Style="{StaticResource AdCardBorderStyle}">
+                        <Image Source="/Offers/McChicken%20Menu%20Large.png"
+                               Stretch="Uniform"
+                               SnapsToDevicePixels="True"/>
+                    </Border>
+
+                    <Border Style="{StaticResource AdCardBorderStyle}" Margin="0,0,0,6">
+                        <Image Source="/Offers/McFlurry.png"
+                               Stretch="Uniform"
+                               SnapsToDevicePixels="True"/>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid x:Name="LoadingPage"
+              Visibility="Collapsed"
+              Opacity="1">
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <Image x:Name="LoadingGifImage"
+                       Width="180"
+                       Height="180"
+                       Stretch="Uniform"
+                       Margin="0,0,0,16"/>
+                <ProgressBar x:Name="LoadingProgressBar"
+                             Width="280"
+                             Height="12"
+                             Minimum="0"
+                             Maximum="100"
+                             Value="0"
+                             Foreground="#FFBC0D"
+                             Background="#FFD9D9D9"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="HomePage"
+              Visibility="Collapsed"
+              Opacity="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="15,10,0,0">
+                <Label Content="MyMcDonald's"
                        FontFamily="Speedee"
-                       FontSize="42"
+                       FontSize="48"
                        FontWeight="Bold"
-                       Margin="0,0,0,14"/>
+                       Padding="0"
+                       VerticalContentAlignment="Center"/>
+                <svg:SvgViewbox Source="/Images/McDonald's_Golden_Arches.svg"
+                                Width="67"
+                                Height="59"
+                                Margin="12,0,0,0"
+                                VerticalAlignment="Center"/>
+            </StackPanel>
 
-            <TextBlock Text="Compila i campi per accedere all'applicazione."
-                       FontFamily="Speedee"
-                       FontSize="18"
-                       TextWrapping="Wrap"
-                       Width="360"
-                       Margin="0,0,0,22"/>
+            <ScrollViewer Grid.Row="1"
+                          Margin="15,20,15,15"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <TextBlock Text="Home"
+                               FontFamily="Speedee"
+                               FontSize="42"
+                               FontWeight="Bold"
+                               Margin="0,0,0,12"/>
+                    <TextBlock Text="Qui potremo inserire offerte, promo e contenuti dinamici con scorrimento completo."
+                               FontFamily="Speedee"
+                               FontSize="20"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,18"/>
 
-            <TextBlock Text="* Campi obbligatori"
-                       FontWeight="Bold"
-                       FontFamily="Speedee"
-                       FontSize="16"
-                       Margin="0,0,0,8"/>
-
-            <TextBlock Text="* Nome" Style="{StaticResource FieldLabelStyle}"/>
-            <TextBox x:Name="NomeTextBox"/>
-
-            <TextBlock Text="* Cognome" Style="{StaticResource FieldLabelStyle}"/>
-            <TextBox x:Name="CognomeTextBox"/>
-
-            <TextBlock Text="* Data di Nascita" Style="{StaticResource FieldLabelStyle}"/>
-            <TextBox x:Name="DataNascitaTextBox"/>
-
-            <TextBlock Text="Posizione attuale (da IP)"
-                       FontFamily="Speedee"
-                       FontSize="24"
-                       Margin="0,8,0,4"/>
-            <TextBlock x:Name="PosizioneTextBlock"
-                       Text="Rilevamento posizione..."
-                       FontFamily="Speedee"
-                       FontSize="22"
-                       TextWrapping="Wrap"
-                       Width="360"/>
-
-            <TextBlock FontFamily="Speedee"
-                       FontSize="14"
-                       TextWrapping="Wrap"
-                       Width="360"
-                       Margin="0,12,0,0">
-                <Run Text="*Cliccando &quot;Registrati&quot;, accetti i "/>
-                <Hyperlink NavigateUri="https://www.mcdonalds.it/termini-e-condizioni"
-                           RequestNavigate="TermsLink_RequestNavigate"
-                           Style="{StaticResource TermsLinkStyle}">
-                    <Run Text="Termini e Condizioni di McDonald's"/>
-                </Hyperlink>
-                <Run Text=". Puoi disiscriverti in qualunque momento. Prendi nota che quando ti disiscrivi potrebbero volerci 10 giorni lavorativi affinché la tua richiesta abbia effetto."/>
-            </TextBlock>
-        </StackPanel>
+                    <Border Background="#FFF5F5F5"
+                            BorderBrush="#22000000"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Height="140"
+                            Margin="0,0,0,14"/>
+                    <Border Background="#FFF5F5F5"
+                            BorderBrush="#22000000"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Height="140"
+                            Margin="0,0,0,14"/>
+                    <Border Background="#FFF5F5F5"
+                            BorderBrush="#22000000"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Height="140"
+                            Margin="0,0,0,14"/>
+                    <Border Background="#FFF5F5F5"
+                            BorderBrush="#22000000"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Height="140"
+                            Margin="0,0,0,14"/>
+                    <Border Background="#FFF5F5F5"
+                            BorderBrush="#22000000"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Height="140"
+                            Margin="0,0,0,14"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>

@@ -10,24 +10,75 @@
 
   <ItemGroup>
     <None Remove="Fonts\Speedee-Regular.otf" />
+    <None Remove="Gifs\LoadingWB.gif" />
     <None Remove="Images\Appstore.svg" />
     <None Remove="Images\GooglePlay.svg" />
+    <None Remove="Images\Cart.svg" />
     <None Remove="Images\McDonald%27s_Golden_Arches.svg" />
+    <None Remove="Images\Menu.png" />
+    <None Remove="Images\SocialFacebook.svg" />
+    <None Remove="Images\SocialInstagram.svg" />
+    <None Remove="Images\SocialTikTok.svg" />
+    <None Remove="Images\SocialYouTube.svg" />
+    <None Remove="Offers\9 Chicken McNuggets.png" />
+    <None Remove="Offers\Double Chicken BBQ Menu.png" />
+    <None Remove="Offers\McChicken Menu e 6 Chicken McNuggets.png" />
+    <None Remove="Offers\McChicken Menu Large.png" />
+    <None Remove="Offers\McFlurry.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="XamlAnimatedGif" Version="2.2.0" />
     <PackageReference Include="SharpVectors" Version="1.8.5" />
     <PackageReference Include="Svg" Version="3.4.7" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Gifs\LoadingWB.gif" />
     <Resource Include="Images\Appstore.svg" />
+    <Resource Include="Images\Cart.svg" />
     <Resource Include="Images\GooglePlay.svg" />
     <Resource Include="Images\McDonald's_Golden_Arches.svg" />
+    <Resource Include="Images\SocialFacebook.svg" />
+    <Resource Include="Images\SocialInstagram.svg" />
+    <Resource Include="Images\SocialTikTok.svg" />
+    <Resource Include="Images\SocialYouTube.svg" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Fonts\Speedee-Regular.otf" />
+    <Resource Include="Images\Menu.png" />
+    <Resource Include="Offers\9 Chicken McNuggets.png" />
+    <Resource Include="Offers\Double Chicken BBQ Menu.png" />
+    <Resource Include="Offers\McChicken Menu e 6 Chicken McNuggets.png" />
+    <Resource Include="Offers\McChicken Menu Large.png" />
+    <Resource Include="Offers\McFlurry.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="McBacon\" />
+    <Folder Include="Altri\" />
+    <Folder Include="McChicken\" />
+    <Folder Include="McWrap\" />
+    <Folder Include="Insalate\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="McBacon\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="McWrap\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="McChicken\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Insalate\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Altri\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
