@@ -5,12 +5,19 @@ using System.Windows;
 
 namespace GestoreOrdini
 {
+    // Finestra checkout: riepilogo carrello e conferma pagamento.
     public partial class CheckoutWindow : Window
     {
+        // Utente della sessione corrente per compilare i dati ordine.
         private readonly Utente? _utente;
+
+        // Prodotti visualizzati nel riepilogo checkout.
         public ObservableCollection<CartItem> CheckoutItems { get; }
+
+        // Totale carrello formattato in valuta italiana.
         public string TotalFormatted => CheckoutItems.Sum(i => i.LineTotal).ToString("C", CultureInfo.GetCultureInfo("it-IT"));
 
+        // Inizializza il checkout copiando gli articoli passati dal carrello.
         public CheckoutWindow(Utente? utente, List<CartItem> cartItems)
         {
             InitializeComponent();
@@ -28,12 +35,14 @@ namespace GestoreOrdini
             DataContext = this;
         }
 
+        // Chiude il checkout senza pagamento.
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
             Close();
         }
 
+        // Valida i campi carta, crea l'ordine e lo salva su file.
         private void PayButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(CardholderTextBox.Text) ||

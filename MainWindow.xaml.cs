@@ -18,20 +18,32 @@ using XamlAnimatedGif;
 
 namespace GestoreOrdini
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    // Finestra registrazione/ingresso dell'app.
     public partial class MainWindow : Window
     {
+        // Link rapidi ai marketplace dell'app.
         private const string AppStoreUrl = "https://mcdonalds.smart.link/e8od41ysl?site_id=download-app&creative_id=1col-publication";
         private const string GooglePlayUrl = "https://mcdonalds.smart.link/pfej9495o?site_id=download-app&creative_id=1col-publication";
+
+        // Velocità di scorrimento automatico della sezione offerte.
         private const double OffersScrollStep = 1.5;
+
+        // Client HTTP condiviso per chiamare i provider IP geolocation.
         private static readonly HttpClient LocationHttpClient = CreateLocationHttpClient();
+
+        // Utente registrato nella sessione corrente.
         private Utente? _utenteSessioneCorrente;
+
+        // Timer che anima lo scroll verticale delle offerte.
         private readonly DispatcherTimer _offersAutoScrollTimer;
+
+        // Flag per sospendere lo scroll quando il mouse è sopra la lista.
         private bool _isOffersAutoScrollPaused;
+
+        // Riferimento allo ScrollViewer della sezione offerte.
         private ScrollViewer? _offersScrollViewer;
 
+        // Inizializza finestra e timer per lo scorrimento offerte.
         public MainWindow()
         {
             InitializeComponent();
@@ -43,6 +55,7 @@ namespace GestoreOrdini
             _offersAutoScrollTimer.Tick += OffersAutoScrollTimer_Tick;
         }
 
+        // Al load imposta GIF, posizione, validazione e auto-scroll offerte.
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             AnimationBehavior.SetSourceUri(LoadingGifImage, new Uri("/Gifs/LoadingWB.gif", UriKind.Relative));
@@ -57,22 +70,26 @@ namespace GestoreOrdini
             }
         }
 
+        // Apre il link App Store.
         private void AppStoreButton_Click(object sender, RoutedEventArgs e)
         {
             OpenUrl(AppStoreUrl);
         }
 
+        // Apre il link Google Play.
         private void GooglePlayButton_Click(object sender, RoutedEventArgs e)
         {
             OpenUrl(GooglePlayUrl);
         }
 
+        // Gestisce click sul link termini e condizioni.
         private void TermsLink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             OpenUrl(e.Uri.AbsoluteUri);
             e.Handled = true;
         }
 
+        // Valida i campi, mostra il loading e apre la home utente.
         private async void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidateRegistrationInputs())
@@ -117,6 +134,7 @@ namespace GestoreOrdini
             Close();
         }
 
+        // Ripristina stile campo e aggiorna lo stato del bottone registrazione.
         private void InputField_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is TextBox textBox)
@@ -127,17 +145,20 @@ namespace GestoreOrdini
             UpdateRegisterButtonState();
         }
 
+        // Aggiorna validazione della data di nascita.
         private void DataNascitaDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             SetControlValidState(DataNascitaDatePicker);
             UpdateRegisterButtonState();
         }
 
+        // Blocca caratteri non ammessi in nome/cognome.
         private void OnlyLettersTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = e.Text.Any(c => !IsAllowedLetterChar(c));
         }
 
+        // Blocca incolla di testo con caratteri non validi.
         private void OnlyLettersTextBox_Pasting(object sender, DataObjectPastingEventArgs e)
         {
             if (!e.DataObject.GetDataPresent(DataFormats.Text))
@@ -153,16 +174,19 @@ namespace GestoreOrdini
             }
         }
 
+        // Pausa l'auto-scroll offerte.
         private void OffersScrollViewer_MouseEnter(object sender, MouseEventArgs e)
         {
             _isOffersAutoScrollPaused = true;
         }
 
+        // Riattiva l'auto-scroll offerte.
         private void OffersScrollViewer_MouseLeave(object sender, MouseEventArgs e)
         {
             _isOffersAutoScrollPaused = false;
         }
 
+        // Apre un URL nel browser predefinito.
         private static void OpenUrl(string url)
         {
             Process.Start(new ProcessStartInfo(url)
@@ -171,6 +195,7 @@ namespace GestoreOrdini
             });
         }
 
+        // Esegue uno step di scorrimento verticale delle offerte.
         private void OffersAutoScrollTimer_Tick(object? sender, EventArgs e)
         {
             if (_isOffersAutoScrollPaused)
@@ -194,6 +219,7 @@ namespace GestoreOrdini
             _offersScrollViewer.ScrollToVerticalOffset(nextOffset);
         }
 
+        // Anima l'opacità e completa il Task al termine.
         private static Task AnimateOpacityAsync(UIElement element, double from, double to, TimeSpan duration)
         {
             var tcs = new TaskCompletionSource<object?>();
@@ -212,6 +238,7 @@ namespace GestoreOrdini
             return tcs.Task;
         }
 
+        // Controlla i campi anagrafici e aggiorna lo stato visivo degli input.
         private bool ValidateRegistrationInputs()
         {
             var isNomeValid = IsValidName(NomeTextBox.Text);
@@ -227,24 +254,10 @@ namespace GestoreOrdini
                 return true;
             }
 
-            if (!isNomeValid)
-            {
-                ShakeControl(NomeTextBox);
-            }
-
-            if (!isCognomeValid)
-            {
-                ShakeControl(CognomeTextBox);
-            }
-
-            if (!isDataValid)
-            {
-                ShakeControl(DataNascitaDatePicker);
-            }
-
             return false;
         }
 
+        // Abilita registrazione solo con campi obbligatori compilati.
         private void UpdateRegisterButtonState()
         {
             RegisterButton.IsEnabled =
@@ -253,11 +266,13 @@ namespace GestoreOrdini
                 DataNascitaDatePicker.SelectedDate.HasValue;
         }
 
+        // Elenco caratteri consentiti per nome/cognome.
         private static bool IsAllowedLetterChar(char c)
         {
             return char.IsLetter(c) || c == ' ' || c == '\'';
         }
 
+        // Verifica che il nome sia valido.
         private static bool IsValidName(string? value)
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -269,6 +284,7 @@ namespace GestoreOrdini
             return normalized.All(IsAllowedLetterChar) && normalized.Any(char.IsLetter);
         }
 
+        // Ripristina lo stile base dei controlli input.
         private void ClearValidationState()
         {
             SetControlValidState(NomeTextBox);
@@ -276,6 +292,7 @@ namespace GestoreOrdini
             SetControlValidState(DataNascitaDatePicker);
         }
 
+        // Applica stile errore o stile valido al controllo.
         private void ApplyValidationState(Control control, bool isValid)
         {
             if (isValid)
@@ -297,6 +314,7 @@ namespace GestoreOrdini
             }
         }
 
+        // Imposta lo stile standard del controllo.
         private void SetControlValidState(Control control)
         {
             control.BorderBrush = Brushes.Black;
@@ -312,27 +330,7 @@ namespace GestoreOrdini
             }
         }
 
-        private static void ShakeControl(UIElement element)
-        {
-            element.RenderTransform = new TranslateTransform();
-
-            var shakeAnimation = new DoubleAnimationUsingKeyFrames
-            {
-                Duration = TimeSpan.FromMilliseconds(360)
-            };
-
-            shakeAnimation.KeyFrames.Add(new EasingDoubleKeyFrame(0, KeyTime.FromPercent(0)));
-            shakeAnimation.KeyFrames.Add(new EasingDoubleKeyFrame(-8, KeyTime.FromPercent(0.15)));
-            shakeAnimation.KeyFrames.Add(new EasingDoubleKeyFrame(8, KeyTime.FromPercent(0.3)));
-            shakeAnimation.KeyFrames.Add(new EasingDoubleKeyFrame(-6, KeyTime.FromPercent(0.45)));
-            shakeAnimation.KeyFrames.Add(new EasingDoubleKeyFrame(6, KeyTime.FromPercent(0.6)));
-            shakeAnimation.KeyFrames.Add(new EasingDoubleKeyFrame(-3, KeyTime.FromPercent(0.75)));
-            shakeAnimation.KeyFrames.Add(new EasingDoubleKeyFrame(3, KeyTime.FromPercent(0.9)));
-            shakeAnimation.KeyFrames.Add(new EasingDoubleKeyFrame(0, KeyTime.FromPercent(1)));
-
-            (element.RenderTransform as TranslateTransform)?.BeginAnimation(TranslateTransform.XProperty, shakeAnimation);
-        }
-
+        // Recupera la posizione tramite provider esterni basati su IP.
         private static async Task<string> GetLocationFromIpAsync()
         {
             var providers = new[]
@@ -369,6 +367,7 @@ namespace GestoreOrdini
             return "Posizione non disponibile";
         }
 
+        // Estrae città/regione/nazione dal payload ipapi.co.
         private static string? ParseIpApiCoLocation(JsonElement root)
         {
             var city = ReadString(root, "city");
@@ -378,6 +377,7 @@ namespace GestoreOrdini
             return BuildLocation(city, region, country);
         }
 
+        // Estrae città/regione/nazione dal payload ipwho.is.
         private static string? ParseIpWhoIsLocation(JsonElement root)
         {
             if (root.TryGetProperty("success", out var successProp) &&
@@ -393,6 +393,7 @@ namespace GestoreOrdini
             return BuildLocation(city, region, country);
         }
 
+        // Legge in modo sicuro una proprietà stringa dal JSON.
         private static string? ReadString(JsonElement root, string propertyName)
         {
             return root.TryGetProperty(propertyName, out var prop)
@@ -400,6 +401,7 @@ namespace GestoreOrdini
                 : null;
         }
 
+        // Compone una posizione eliminando valori vuoti/duplicati.
         private static string? BuildLocation(params string?[] values)
         {
             var parts = values
@@ -416,6 +418,7 @@ namespace GestoreOrdini
             return string.Join(", ", parts);
         }
 
+        // Crea e configura il client HTTP per la geolocalizzazione.
         private static HttpClient CreateLocationHttpClient()
         {
             var httpClient = new HttpClient

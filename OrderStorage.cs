@@ -3,15 +3,19 @@ using System.IO;
 
 namespace GestoreOrdini
 {
+    // Salvataggio e recupero ordini su file JSON locale.
     public static class OrderStorage
     {
+        // Opzioni comuni per serializzazione/deserializzazione JSON.
         private static readonly JsonSerializerOptions SerializerOptions = new()
         {
             WriteIndented = true
         };
 
+        // File locale che contiene tutti gli ordini.
         private static readonly string OrdersFilePath = Path.Combine(AppContext.BaseDirectory, "orders.json");
 
+        // Legge gli ordini; in caso di errore restituisce lista vuota.
         public static List<OrderRecord> GetOrders()
         {
             try
@@ -35,6 +39,7 @@ namespace GestoreOrdini
             }
         }
 
+        // Aggiunge un nuovo ordine mantenendo quelli già presenti.
         public static void AppendOrder(OrderRecord order)
         {
             var orders = GetOrders();

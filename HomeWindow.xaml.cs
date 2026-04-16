@@ -12,12 +12,20 @@ using System.Windows.Media;
 
 namespace GestoreOrdini
 {
+    // Finestra principale dopo la registrazione.
     public partial class HomeWindow : Window
     {
+        // Utente loggato nella sessione corrente.
         private readonly Utente? _utente;
+
+        // Link rapidi ai marketplace dell'app.
         private const string AppStoreUrl = "https://mcdonalds.smart.link/e8od41ysl?site_id=download-app&creative_id=1col-publication";
         private const string GooglePlayUrl = "https://mcdonalds.smart.link/pfej9495o?site_id=download-app&creative_id=1col-publication";
+
+        // Estensioni file immagini supportate per i menu.
         private static readonly string[] SupportedImageExtensions = [".png", ".jpg", ".jpeg", ".webp", ".bmp"];
+
+        // Prezzo base per categoria, poi incrementato in base all'indice del prodotto.
         private static readonly Dictionary<string, decimal> CategoryBasePrices = new(StringComparer.OrdinalIgnoreCase)
         {
             ["McBacon"] = 9.90m,
@@ -26,6 +34,7 @@ namespace GestoreOrdini
             ["Insalate"] = 7.90m,
             ["Altri"] = 6.90m
         };
+        // Pennelli usati per differenziare visivamente prezzi/promozioni.
         private static readonly Brush StandardPriceBrush = new SolidColorBrush(Color.FromRgb(176, 0, 32));
         private static readonly Brush SeasonalDiscountBrush = new SolidColorBrush(Color.FromRgb(0, 137, 209));
         private static readonly Brush OfferGoldBrush = new LinearGradientBrush(
@@ -33,11 +42,15 @@ namespace GestoreOrdini
             Color.FromRgb(247, 204, 92),
             new Point(0, 0),
             new Point(1, 0));
+
+        // Dizionari del carrello: quantità e dettaglio prodotto per titolo.
         private readonly Dictionary<string, int> _cartQuantities = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, CartItem> _cartProducts = new(StringComparer.OrdinalIgnoreCase);
 
+        // Collezione card menu visualizzate nella UI.
         public ObservableCollection<MenuCardViewModel> MenuCards { get; } = [];
 
+        // Costruttore base: inizializza finestra e aggancia eventi.
         public HomeWindow()
         {
             InitializeComponent();
@@ -78,6 +91,7 @@ namespace GestoreOrdini
             }
         }
 
+        // Aggiunge/aggiorna il prodotto selezionato nel carrello.
         private void AddToCartButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not System.Windows.Controls.Button button || button.Tag is not MenuCardViewModel menuCard)
@@ -102,6 +116,7 @@ namespace GestoreOrdini
             UpdateCartCountBadge();
         }
 
+        // Diminuisce la quantità (minimo 1).
         private void QuantityMinusButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not System.Windows.Controls.Button { Tag: MenuCardViewModel menuCard })
@@ -115,6 +130,7 @@ namespace GestoreOrdini
             }
         }
 
+        // Aumenta la quantità (massimo 10).
         private void QuantityPlusButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not System.Windows.Controls.Button { Tag: MenuCardViewModel menuCard })
@@ -128,6 +144,7 @@ namespace GestoreOrdini
             }
         }
 
+        // Mostra/nasconde il pannello crediti/disclaimer.
         private void CreditsButton_Click(object sender, RoutedEventArgs e)
         {
             if (FindName("CreditsDisclaimerPanel") is not System.Windows.Controls.Border panel)
@@ -140,6 +157,7 @@ namespace GestoreOrdini
                 : Visibility.Visible;
         }
 
+        // Apre il checkout con gli articoli nel carrello.
         private void CartButton_Click(object sender, RoutedEventArgs e)
         {
             if (_cartProducts.Count == 0)
@@ -171,6 +189,7 @@ namespace GestoreOrdini
             UpdateCartCountBadge();
         }
 
+        // Apre la finestra report ordini.
         private void OrdersReportTopButton_Click(object sender, RoutedEventArgs e)
         {
             var reportWindow = new OrdersReportWindow
@@ -182,6 +201,7 @@ namespace GestoreOrdini
             reportWindow.ShowDialog();
         }
 
+        // Costruttore con utente: popola i dati anagrafici in alto.
         public HomeWindow(Utente? utente)
             : this()
         {
@@ -211,6 +231,7 @@ namespace GestoreOrdini
             }
         }
 
+        // Esegue il logout tornando alla schermata registrazione.
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             var registrationWindow = new MainWindow
@@ -223,16 +244,19 @@ namespace GestoreOrdini
             Close();
         }
 
+        // Apre il link App Store.
         private void AppStoreButton_Click(object sender, RoutedEventArgs e)
         {
             OpenUrl(AppStoreUrl);
         }
 
+        // Apre il link Google Play.
         private void GooglePlayButton_Click(object sender, RoutedEventArgs e)
         {
             OpenUrl(GooglePlayUrl);
         }
 
+        // Apre un social in base all'URL nel tag del bottone.
         private void SocialButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not System.Windows.Controls.Button button)
@@ -246,6 +270,7 @@ namespace GestoreOrdini
             }
         }
 
+        // Apre un URL nel browser predefinito.
         private static void OpenUrl(string url)
         {
             Process.Start(new ProcessStartInfo(url)
@@ -254,6 +279,7 @@ namespace GestoreOrdini
             });
         }
 
+        // Carica i prodotti della categoria selezionata.
         private void MenuCategoryButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not System.Windows.Controls.Button button || button.Tag is not string category)
@@ -269,6 +295,7 @@ namespace GestoreOrdini
             }
         }
 
+        // Costruisce le card della categoria e aggiorna il layout.
         private void LoadMenuCategory(string category)
         {
             if (FindName("WelcomeMessageText") is System.Windows.Controls.TextBlock welcomeText)
@@ -336,6 +363,7 @@ namespace GestoreOrdini
             UpdateCartCountBadge();
         }
 
+        // Aggiorna il badge con il totale quantità nel carrello.
         private void UpdateCartCountBadge()
         {
             if (FindName("CartCountText") is not System.Windows.Controls.TextBlock countText)
@@ -347,6 +375,7 @@ namespace GestoreOrdini
             countText.Text = totalItems.ToString(CultureInfo.InvariantCulture);
         }
 
+        // Applica regole prezzo/promozione in base al nome prodotto.
         private static PriceInfo BuildPriceInfo(string title, decimal defaultPrice)
         {
             var normalizedTitle = NormalizeTitle(title);
@@ -391,6 +420,7 @@ namespace GestoreOrdini
             return new PriceInfo($"Da {defaultPrice.ToString("C", CultureInfo.GetCultureInfo("it-IT"))}", defaultPrice, StandardPriceBrush, PromotionKind.None, string.Empty);
         }
 
+        // Normalizza il titolo (minuscolo, senza accenti) per confronti robusti.
         private static string NormalizeTitle(string title)
         {
             if (string.IsNullOrWhiteSpace(title))
@@ -403,6 +433,7 @@ namespace GestoreOrdini
             return new string(filtered.ToArray()).Normalize(NormalizationForm.FormC).ToLowerInvariant();
         }
 
+        // Cerca le immagini categoria in varie cartelle candidate.
         private static List<string> GetCategoryImageFiles(string category)
         {
             var baseDir = AppContext.BaseDirectory;
@@ -439,6 +470,7 @@ namespace GestoreOrdini
             return [];
         }
 
+        // Risale le directory per trovare la root progetto con il `.csproj`.
         private static string? ResolveProjectRoot(string startPath)
         {
             var current = new DirectoryInfo(startPath);
@@ -456,8 +488,10 @@ namespace GestoreOrdini
             return null;
         }
 
+        // Struttura interna: dati prezzo + promozione usati nella costruzione card.
         private readonly record struct PriceInfo(string Text, decimal UnitPrice, Brush Brush, PromotionKind PromotionKind, string PromotionText);
 
+        // ViewModel di una singola card menu mostrata in home.
         public sealed class MenuCardViewModel : INotifyPropertyChanged
         {
             private int _selectedQuantity = 1;
@@ -472,6 +506,7 @@ namespace GestoreOrdini
             public Uri? ImagePath { get; init; }
             public int[] Quantities { get; } = Enumerable.Range(1, 10).ToArray();
 
+            // Quantità selezionata per la card corrente.
             public int SelectedQuantity
             {
                 get => _selectedQuantity;
@@ -487,6 +522,7 @@ namespace GestoreOrdini
                 }
             }
 
+            // Indica se la card è già stata aggiunta al carrello.
             public bool IsAdded
             {
                 get => _isAdded;
@@ -502,8 +538,10 @@ namespace GestoreOrdini
                 }
             }
 
+            // Evento standard WPF per notificare aggiornamenti proprietà al binding.
             public event PropertyChangedEventHandler? PropertyChanged;
 
+            // Notifica alla UI il cambiamento della proprietà indicata.
             private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

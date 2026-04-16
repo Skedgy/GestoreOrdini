@@ -1,12 +1,14 @@
 namespace GestoreOrdini
 {
+    // Tipologia promozione associata al prodotto.
     public enum PromotionKind
     {
-        None,
-        Offer,
-        SeasonalDiscount
+        None, // Nessuna promozione.
+        Offer, // Prezzo in offerta.
+        SeasonalDiscount // Sconto legato alla stagione.
     }
 
+    // Singola riga prodotto nel carrello/ordine.
     public sealed class CartItem
     {
         public string ProductName { get; set; } = string.Empty;
@@ -15,9 +17,12 @@ namespace GestoreOrdini
         public string PriceText { get; set; } = string.Empty;
         public PromotionKind PromotionKind { get; set; }
         public string PromotionText { get; set; } = string.Empty;
+
+        // Totale riga = prezzo unitario × quantità.
         public decimal LineTotal => UnitPrice * Quantity;
     }
 
+    // Dati carta inseriti nel checkout.
     public sealed class PaymentDetails
     {
         public string Cardholder { get; set; } = string.Empty;
@@ -26,8 +31,12 @@ namespace GestoreOrdini
         public string Cvv { get; set; } = string.Empty;
     }
 
+    /// <summary>
+    /// Modello completo di un ordine salvato su file.
+    /// </summary>
     public sealed class OrderRecord
     {
+        // Numero progressivo basato sui tick temporali.
         public long OrderNumber { get; set; }
         public string OrderId { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }

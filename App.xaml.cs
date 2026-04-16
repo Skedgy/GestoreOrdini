@@ -4,9 +4,7 @@ using System.Windows;
 
 namespace GestoreOrdini
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+    // Entry point WPF dell'applicazione.
     public partial class App : Application
     {
     }

@@ -4,10 +4,13 @@ using System.Windows;
 
 namespace GestoreOrdini
 {
+    // Finestra report con elenco ordini salvati.
     public partial class OrdersReportWindow : Window
     {
+        // Sorgente dati della griglia report.
         public ObservableCollection<OrderReportRow> Orders { get; }
 
+        // Carica gli ordini e costruisce le righe del report.
         public OrdersReportWindow()
         {
             InitializeComponent();
@@ -32,11 +35,13 @@ namespace GestoreOrdini
             DataContext = this;
         }
 
+        // Chiude la finestra report.
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        // Riga sintetica usata nella tabella del report ordini.
         public sealed class OrderReportRow
         {
             public long OrderNumber { get; init; }

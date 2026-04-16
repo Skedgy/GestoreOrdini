@@ -1,5 +1,6 @@
 namespace GestoreOrdini
 {
+    // Dati anagrafici dell'utente della sessione corrente.
     public class Utente
     {
         public string Nome { get; set; } = string.Empty;
